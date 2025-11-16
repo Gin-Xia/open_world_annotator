@@ -1,122 +1,82 @@
-# Automatic Annotation System
+# Open World Annotator
 
-A zero-shot visual annotation pipeline combining OWL-ViT and MobileSAM, with prompt engineering, bounding box post-processing, and optional GUI frontend for fast and flexible dataset labeling.
+**Zero-shot Object Detection & Segmentation System Powered by OWL-V2 and MobileSAM**  
+Cloud-Ready · Batch Inference · S3-Integrated · SageMaker-Compatible
 
 ---
 
-## Features
+The system supports:
 
--  **Zero-shot object detection** using OWL-ViT
--  **Segmentation masks** via MobileSAM
--  **Prompt expansion** using LLM-guided augmentation
--  **Box filtering and merging** (confidence thresholding, NMS, IoU merging)
--  **Visualization** of boxes and masks with score overlays
--  **Evaluation and metrics**
--  **Web-based frontend** (HTML/JS/CSS)
+- Single-image inference
+- Batch inference (multiple images)
+- Folder / ZIP inference
+- GPU batch acceleration
+- Cloud-ready API interface
+- S3-based storage
+- SageMaker real-time inference compatibility
 ---
 
 ## System Pipeline
 
-![Pipeline Overview](pipeline_diagram.png)
+Frontend (Web)
+      │
+      ▼
+Backend API (FastAPI · Docker · ECS/Fargate)
+      │
+      ├── Upload images to S3
+      └── Invoke SageMaker Endpoint
+                │
+                ▼
+        OWL-V2 + MobileSAM
+                │
+                ▼
+  JSON results / S3 image outputs
+      │
+      ▼
+User Interface
+
 
 ---
 
-## User Interface
-
-![GUI Overview](GUI_Showcase.png)
-
----
 
 ## Project Structure
 
 ```
-automatic-annotation-system/
+open_world_annotator/
 │
-├── datasets/
-│   ├── coco/
-│   └── flicker30k/
+├── backend/
+│   ├── api/                ← FastAPI routes (single/batch/zip)
+│   │     ├── app.py
+│   │     └── routers/
+│   │
+│   ├── inference/          ← Unified inference engine (batch-first)
+│   │     ├── inference_core.py
+│   │     ├── loader.py
+│   │     └── utils/
+│   │
+│   ├── models/
+│   │     ├── mobile_sam.pt
+│   │     ├── owl_v2_downloaded.json
+│   │     └── ...
+│   │
+│   └── training/
 │
-├── frontend/                     # Optional GUI frontend
-│   ├── Ademo/                    # Functionnally Demo
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
+├── frontend/               ← Minimal web interface for uploads/tests
 │
-├── models/                       # Model weights and wrappers
-│   ├── owlvit-base-patch32/
-│   ├── owlvit-large-patch14/
-│   ├── owlv2-large-patch14-ensemble/
-│   ├── mobile_sam.pt             # MobileSAM weights
-│   ├── mobilesam_official.py
-│   ├── owlvit.py
-│   └── owlvit_official.py
+├── sagemaker_container/    ← Docker image for SageMaker GPU inference
+│   ├── Dockerfile
+│   ├── inference.py        ← model_fn, input_fn, predict_fn, output_fn
+│   ├── requirements.txt
+│   └── model/
+│         └── mobile_sam.pt
 │
-├── app.py                        # Launches GUI and API backend
-├── inference.py                  # OWL-ViT + SAM pipeline showcase
-├── train.py                      # For optional fine-tuning
-├── config.py                     # Paths and config values
-├── box_processing.py             # NMS, merge, filtering
-├── ensemble_inference.py         # Inference used in GUI
-├── flickr_loader.py
-├── flickr30k_entities_utils.py
-├── FlickrTrainingDataset.py
-├── image_folder_dataset.py
-├── expand_prompt.py              # LLM-based prompt generator
-├── evaluation_metrics.py
-├── grid_search.py
-├── coco_loader.py
-├── visualize.py
-├── environment.yml               # Conda environment config
-├── inference.log                 # Logs from recent run
-├── pipeline_diagram.png          # System pipeline diagram
+├── docker/                 ← Local/API container files
+│   ├── Dockerfile.api
+│   └── start.sh
+│
 └── README.md
 ```
 
----
-
-##  Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/Gin-Xia/automatic-annotation-system.git
-cd automatic-annotation-system
-```
-
-### 2. Set up the environment
-
-```bash
-conda env create -f environment.yml
-conda activate automatic-annotation-system
-```
-
-
-### 3. Launch frontend
-
-```bash
-python app.py
-```
-
----
-
-## Outputs
-
-- Bounding boxes with scores
-- Instance masks from MobileSAM
-- Expanded prompts for diverse detection
-- Interactive visual result display
-
----
-
-
-
-## TODOs
-
-- [ ] Add Dockerfile for reproducibility
-- [ ] LLM-in-the-loop prompt refinement
-- [ ] Custom training on pseudo-labeled dataset
-
----
 
 ## License
 

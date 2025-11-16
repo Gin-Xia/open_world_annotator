@@ -14,9 +14,6 @@
 *.log
 
 
-output/
-results/
-runs/
 showcase_image/
 runing-logs/
 backend/training/datasets
