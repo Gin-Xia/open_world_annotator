@@ -17,6 +17,7 @@ The system supports:
 ---
 
 ## System Pipeline
+```
 
 Frontend (Web)
       │
@@ -34,7 +35,7 @@ Backend API (FastAPI · Docker · ECS/Fargate)
       │
       ▼
 User Interface
-
+```
 
 ---
 
