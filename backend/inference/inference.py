@@ -769,3 +769,8 @@ def upload_json_to_s3(data, s3_prefix, filename):
     s3_client.upload_file(local_json, bucket, key)
     return f"s3://{bucket}/{key}"
 
+
+
+if __name__ == "__main__":
+    print("[SageMaker] Launching model server...")
+

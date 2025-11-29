@@ -20,3 +20,6 @@ backend/training/datasets
 backend/models
 .idea
 __pycache__
+
+.env
+backend/models.zip

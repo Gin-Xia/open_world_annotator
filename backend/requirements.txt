@@ -44,3 +44,6 @@ openai
 # MobileSAM (Git dependency)
 # ===========
 git+https://github.com/ChaoningZhang/MobileSAM.git
+
+sagemaker-inference
+
