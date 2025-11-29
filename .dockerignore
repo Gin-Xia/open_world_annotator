@@ -1,0 +1,15 @@
+.git
+.idea
+__pycache__
+frontend
+docs
+deployment
+running-logs
+showcase_image
+.env
+.gitignore
+config.py
+environment.yml
+README.md
+testS3.py
+mkdocs.yml
